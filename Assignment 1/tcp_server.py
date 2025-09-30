@@ -1,6 +1,6 @@
 import socket
 
-HOST = "0.0.0.0"   
+HOST = "0.0.0.0"
 PORT = 53333
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
@@ -11,7 +11,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
     conn, addr = server_socket.accept()
     with conn:
         print(f"Connected by {addr}")
-        data = conn.recv(1024).decode()
-        print("Received from client:", data)
-        if data == "hello TCP":
-            conn.sendall("back at you TCP".encode())
+        while True:
+            data = conn.recv(1024).decode()
+            if not data:
+                break
+            print("Received from client:", data)
+            if data.lower() == "hello tcp":
+                conn.sendall("back at you TCP".encode())
+            else:
+                conn.sendall(f"Echo: {data}".encode())

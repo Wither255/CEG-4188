@@ -11,5 +11,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as server_socket:
         data, addr = server_socket.recvfrom(1024)
         message = data.decode()
         print(f"Received from {addr}: {message}")
-        if message == "hello UDP":
+        if message.lower() == "hello udp":
             server_socket.sendto("back at you UDP".encode(), addr)
+        else:
+            server_socket.sendto(f"Echo: {message}".encode(), addr)
